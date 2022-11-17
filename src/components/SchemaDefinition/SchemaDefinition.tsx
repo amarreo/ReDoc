@@ -14,6 +14,7 @@ export interface ObjectDescriptionProps {
   exampleRef?: string;
   showReadOnly?: boolean;
   showWriteOnly?: boolean;
+  showExample?: boolean;
   parser: OpenAPIParser;
   options: RedocNormalizedOptions;
 }
@@ -53,7 +54,7 @@ export class SchemaDefinition extends React.PureComponent<ObjectDescriptionProps
   }
 
   render() {
-    const { showReadOnly = true, showWriteOnly = false } = this.props;
+    const { showReadOnly = true, showWriteOnly = false, showExample = true } = this.props;
     return (
       <Section>
         <Row>
@@ -64,23 +65,35 @@ export class SchemaDefinition extends React.PureComponent<ObjectDescriptionProps
               schema={this.mediaModel.schema}
             />
           </MiddlePanel>
-          <DarkRightPanel>
-            <MediaSamplesWrap>
-              <MediaTypeSamples renderDropdown={this.renderDropdown} mediaType={this.mediaModel} />
-            </MediaSamplesWrap>
-          </DarkRightPanel>
+          {showExample && (
+            <DarkRightPanel>
+              <MediaSamplesWrap>
+                <MediaTypeSamples
+                  renderDropdown={this.renderDropdown}
+                  mediaType={this.mediaModel}
+                />
+              </MediaSamplesWrap>
+            </DarkRightPanel>
+          )}
         </Row>
       </Section>
     );
   }
 
   private renderDropdown = props => {
-    return <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />;
+    return (
+      <DropdownOrLabel
+        Label={MimeLabel}
+        Dropdown={InvertedSimpleDropdown}
+        {...props}
+        variant="dark"
+      />
+    );
   };
 }
 
 const MediaSamplesWrap = styled.div`
-  background: ${({ theme }) => theme.codeSample.backgroundColor};
+  background: ${({ theme }) => theme.codeBlock.backgroundColor};
   & > div,
   & > pre {
     padding: ${props => props.theme.spacing.unit * 4}px;

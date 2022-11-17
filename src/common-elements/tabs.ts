@@ -16,7 +16,7 @@ export const Tabs = styled(ReactTabs)`
       padding: 5px 10px;
       display: inline-block;
 
-      background-color: ${({ theme }) => theme.codeSample.backgroundColor};
+      background-color: ${({ theme }) => theme.codeBlock.backgroundColor};
       border-bottom: 1px solid rgba(0, 0, 0, 0.5);
       cursor: pointer;
       text-align: center;
@@ -24,7 +24,7 @@ export const Tabs = styled(ReactTabs)`
       color: ${({ theme }) => darken(theme.colors.tonalOffset, theme.rightPanel.textColor)};
       margin: 0
         ${({ theme }) => `${theme.spacing.unit}px ${theme.spacing.unit}px ${theme.spacing.unit}px`};
-      border: 1px solid ${({ theme }) => darken(0.05, theme.codeSample.backgroundColor)};
+      border: 1px solid ${({ theme }) => darken(0.05, theme.codeBlock.backgroundColor)};
       border-radius: 5px;
       min-width: 60px;
       font-size: 0.9em;
@@ -33,6 +33,9 @@ export const Tabs = styled(ReactTabs)`
       &.react-tabs__tab--selected {
         color: ${props => props.theme.colors.text.primary};
         background: ${({ theme }) => theme.rightPanel.textColor};
+        &:focus {
+          outline: auto;
+        }
       }
 
       &:only-child {
@@ -41,24 +44,24 @@ export const Tabs = styled(ReactTabs)`
       }
 
       &.tab-success {
-        color: ${props => props.theme.colors.responses.success.color};
+        color: ${props => props.theme.colors.responses.success.tabTextColor};
       }
 
       &.tab-redirect {
-        color: ${props => props.theme.colors.responses.redirect.color};
+        color: ${props => props.theme.colors.responses.redirect.tabTextColor};
       }
 
       &.tab-info {
-        color: ${props => props.theme.colors.responses.info.color};
+        color: ${props => props.theme.colors.responses.info.tabTextColor};
       }
 
       &.tab-error {
-        color: ${props => props.theme.colors.responses.error.color};
+        color: ${props => props.theme.colors.responses.error.tabTextColor};
       }
     }
   }
   > .react-tabs__tab-panel {
-    background: ${({ theme }) => theme.codeSample.backgroundColor};
+    background: ${({ theme }) => theme.codeBlock.backgroundColor};
     & > div,
     & > pre {
       padding: ${props => props.theme.spacing.unit * 4}px;

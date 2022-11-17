@@ -21,6 +21,7 @@ export interface EndpointProps {
 
   hideHostname?: boolean;
   inverted?: boolean;
+  compact?: boolean;
 }
 
 export interface EndpointState {
@@ -49,7 +50,9 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
         {options => (
           <OperationEndpointWrap>
             <EndpointInfo onClick={this.toggle} expanded={expanded} inverted={inverted}>
-              <HttpVerb type={operation.httpVerb}> {operation.httpVerb}</HttpVerb>{' '}
+              <HttpVerb type={operation.httpVerb} compact={this.props.compact}>
+                {operation.httpVerb}
+              </HttpVerb>
               <ServerRelativeURL>{operation.path}</ServerRelativeURL>
               <ShelfIcon
                 float={'right'}
@@ -59,11 +62,12 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                 style={{ marginRight: '-25px' }}
               />
             </EndpointInfo>
-            <ServersOverlay expanded={expanded}>
+            <ServersOverlay expanded={expanded} aria-hidden={!expanded}>
               {operation.servers.map(server => {
                 const normalizedUrl = options.expandDefaultServerVariables
                   ? expandDefaultServerVariables(server.url, server.variables)
                   : server.url;
+                const basePath = getBasePath(normalizedUrl);
                 return (
                   <ServerItem key={normalizedUrl}>
                     <Markdown source={server.description || ''} compact={true} />
@@ -71,7 +75,9 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                       <ServerUrl>
                         <span>
                           {hideHostname || options.hideHostname
-                            ? getBasePath(normalizedUrl)
+                            ? basePath === '/'
+                              ? ''
+                              : basePath
                             : normalizedUrl}
                         </span>
                         {operation.path}
